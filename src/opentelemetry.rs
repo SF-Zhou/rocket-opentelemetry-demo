@@ -13,7 +13,7 @@ use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::EnvFilter;
 
-const DEFAULT_INTERVAL: Duration = Duration::from_secs(5);
+const DEFAULT_INTERVAL: Duration = Duration::from_secs(1);
 static TRACING_INITIALIZER: OnceLock<()> = OnceLock::new();
 
 pub fn init_opentelemetry(endpoint: &SocketAddr, resource: Resource) {
@@ -40,7 +40,7 @@ pub fn init_opentelemetry(endpoint: &SocketAddr, resource: Resource) {
     let exporter = MetricExporter::builder()
         .with_tonic()
         .with_temporality(Temporality::Delta)
-        .with_endpoint(format!("http://{}/v1/metrics", endpoint))
+        .with_endpoint(format!("http://{endpoint}/v1/metrics"))
         .with_timeout(std::time::Duration::from_secs(10))
         .with_protocol(Protocol::Grpc)
         .build()
@@ -59,7 +59,7 @@ pub fn init_opentelemetry(endpoint: &SocketAddr, resource: Resource) {
 
     let exporter = opentelemetry_otlp::SpanExporter::builder()
         .with_tonic()
-        .with_endpoint(format!("http://{}", endpoint))
+        .with_endpoint(format!("http://{endpoint}"))
         .with_timeout(Duration::from_secs(10))
         .with_protocol(Protocol::Grpc)
         .build()
@@ -80,7 +80,7 @@ pub fn init_opentelemetry(endpoint: &SocketAddr, resource: Resource) {
 
     let exporter = opentelemetry_otlp::LogExporter::builder()
         .with_tonic()
-        .with_endpoint(format!("http://{}/v1/metrics", endpoint))
+        .with_endpoint(format!("http://{endpoint}/v1/metrics"))
         .with_timeout(Duration::from_secs(10))
         .with_protocol(Protocol::Grpc)
         .build()

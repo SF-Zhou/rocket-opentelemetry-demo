@@ -6,7 +6,7 @@
 
 ```bash
 # 1. download latest code.
-git clone -b v0.76.2 https://github.com/SigNoz/signoz.git --depth 1
+git clone https://github.com/SigNoz/signoz.git --depth 1
 cd signoz/deploy/docker
 
 # 2. use docker to start a new instance.
@@ -19,11 +19,10 @@ docker compose up -d --remove-orphans
 
 ```bash
 # 1. start the demo server.
-cargo run --release
+cargo run --release --bin server
 
 # 2. run in another terminal.
-curl http://127.0.0.1:8000
-#> hello world!
+cargo run --release --bin client
 ```
 
 ![SigNoz tracing demo](./images/signoz.png)
